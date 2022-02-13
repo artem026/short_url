@@ -35,3 +35,5 @@ class UrlExport(APIView):
 
         for row in fields:
             writer.writerow(row)
+
+        return response
