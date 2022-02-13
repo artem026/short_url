@@ -1,3 +1,6 @@
+import csv
+
+from django.http import HttpResponse
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,7 +14,7 @@ class UrlListviewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Url.objects.all()
 
 class UrlShortener(APIView):
-    def post (self, request, origin_uri):
+    def post(self, request, origin_uri):
         try:
             url = Url.objects.get(url=origin_uri)
         except:
@@ -22,4 +25,13 @@ class UrlShortener(APIView):
 
         return Response(short_url)
 
+class UrlExport(APIView):
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="export.csv"'
 
+        writer = csv.writer(response)
+        fields = Url.objects.all().values_list('url', 'short_url')
+
+        for row in fields:
+            writer.writerow(row)

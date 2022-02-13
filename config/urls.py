@@ -17,14 +17,15 @@ from django.contrib import admin
 from django.urls import path, re_path
 
 from rest_framework.routers import DefaultRouter
-from short_url.views import UrlListviewSet, UrlShortener
+from short_url.views import UrlListviewSet, UrlShortener, UrlExport
 
 router = DefaultRouter()
 router.register('', UrlListviewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^short_url/(?P<origin_uri>.+)$', UrlShortener.as_view())
+    re_path(r'^short_url/(?P<origin_uri>.+)$', UrlShortener.as_view()),
+    path('export/', UrlExport.as_view())
 ]
 
 urlpatterns += router.urls
