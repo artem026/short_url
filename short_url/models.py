@@ -16,6 +16,8 @@ class Url(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        self.url_hash = self.generate_hash()
+        self.short_url = self.create_short_url()
         super(Url, self).save(*args, **kwargs)
 
     def generate_hash(self):

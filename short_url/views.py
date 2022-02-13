@@ -11,11 +11,11 @@ class UrlListviewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     queryset = Url.objects.all()
 
 class UrlShortener(APIView):
-    def post (self, request, origin_url):
+    def post (self, request, origin_uri):
         try:
-            url = Url.objects.get(url=origin_url)
+            url = Url.objects.get(url=origin_uri)
         except:
-            url = Url(url=origin_url)
+            url = Url(url=origin_uri)
             url.save()
         
         short_url = url.short_url
