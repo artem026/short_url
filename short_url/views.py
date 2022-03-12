@@ -1,6 +1,6 @@
 import csv
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework import viewsets, mixins
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,6 +24,13 @@ class UrlShortener(APIView):
         short_url = url.short_url
 
         return Response(short_url)
+
+class UrlView(APIView):
+    def get(self, request, hash):
+        url = Url.objects.get(url_hash=hash)
+        url = url.url
+
+        return HttpResponseRedirect(url)
 
 class UrlExport(APIView):
     def get(self, request):
